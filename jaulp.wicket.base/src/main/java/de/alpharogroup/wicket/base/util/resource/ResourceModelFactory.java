@@ -226,33 +226,37 @@ public final class ResourceModelFactory
 	 *            the default value
 	 * @return a new {@link StringResourceModel} as an {@link IModel}
 	 */
-	public static IModel<String> newResourceModel(final String resourceKey,
-		final Object[] parameters, final Component component, final String defaultValue)
-	{
-		if ((parameters != null) && (parameters.length > 0))
-		{
-			if ((defaultValue != null) && !defaultValue.isEmpty())
-			{
-				return ResourceModelFactory.newResourceModel(resourceKey, defaultValue, component,
-					parameters);
-			}
-			else
-			{
-				return ResourceModelFactory.newResourceModel(resourceKey, component, parameters);
-			}
-		}
-		else
-		{
-			if ((defaultValue != null) && !defaultValue.isEmpty())
-			{
-				return ResourceModelFactory.newResourceModel(resourceKey, component, defaultValue);
-			}
-			else
-			{
-				return ResourceModelFactory.newResourceModel(resourceKey, component);
-			}
-		}
-	}
+    public static IModel<String> newResourceModel(final String resourceKey,
+            final Object[] parameters, final Component component, final String defaultValue)
+    {
+        boolean parameterNotNullOrEmpty = ArrayUtils.isNotEmpty(parameters);
+        boolean parameterNullOrEmpty =  !parameterNotNullOrEmpty;
+        if (parameterNotNullOrEmpty)
+        {
+            if (StringUtils.isNotEmpty(defaultValue))
+            {
+                return ResourceModelFactory.newResourceModel(resourceKey, defaultValue, component,
+                        parameters);
+            }
+            if (StringUtils.isEmpty(defaultValue))
+            {
+                return ResourceModelFactory.newResourceModel(resourceKey, component, parameters);
+            }
+        }
+        if (parameterNullOrEmpty)        
+        {
+            if (StringUtils.isNotEmpty(defaultValue))
+            {
+                return ResourceModelFactory.newResourceModel(resourceKey, component, defaultValue);
+            }
+            if (StringUtils.isEmpty(defaultValue))
+            {
+                return ResourceModelFactory.newResourceModel(resourceKey, component);
+            }
+        }
+        return ResourceModelFactory.newResourceModel(resourceKey, null, null, defaultValue,
+                parameters);
+    }
 
 	/**
 	 * Factory method to create a new StringResourceModel from the given resource key.
