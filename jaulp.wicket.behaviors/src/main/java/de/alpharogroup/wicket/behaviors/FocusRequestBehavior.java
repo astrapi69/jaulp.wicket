@@ -169,7 +169,6 @@ public class FocusRequestBehavior extends Behavior
 		super.renderHead(component, response);
 		component.setOutputMarkupId(true);
 		response.render(OnLoadHeaderItem.forScript(newJavaScript(component)));
-		super.renderHead(component, response);
 	}
 
 }
